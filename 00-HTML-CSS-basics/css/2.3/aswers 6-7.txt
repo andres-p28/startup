@@ -1,0 +1,7 @@
+2.3.6:
+
+Adding two classes in the html tag (<html class="a b") and then targeting with the selector .a.b{ font-size: 14px;}
+
+2.3.7
+
+Adding the important tag in the rule: .oh-no-inline-styles{background-color:green !important;}

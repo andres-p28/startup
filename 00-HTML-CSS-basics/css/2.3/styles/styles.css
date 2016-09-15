@@ -34,13 +34,17 @@ header, footer {
 
 .navigation {
     font-size: 12px;
-    background-color:#0000FF;
 }
 
 .sidebar {
     font-size: 10px;
 }
 
-.header, .footer, .sidebar {
-    background-color:#FF00FF;
+*[class$=r] {
+    background-color: magenta;
 }
+
+*[class*=a]:not(*[class$=r]) {
+    background-color: blue;
+}
+
