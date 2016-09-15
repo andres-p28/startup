@@ -1,0 +1,101 @@
+* {
+	-webkit-box-sizing: border-box;
+	-moz-box-sizing: border-box;
+	box-sizing: border-box;
+}
+
+html {
+    font: 14px arial, sans-serif;
+}
+
+header {
+    background-color:yellow;
+    text-align:center;
+    margin-top: 10px; /* Margin doesn't work */
+    padding: 1px 1px;
+}
+
+footer {
+    background-color:yellow;
+    text-align:center;
+    padding: 1px 1px;
+    margin-bottom: 10px; /* The top margin doesn't work */
+}
+
+nav,
+section,
+aside {
+    display:inline-block;
+    min-height: 325px;
+    text-align:center;
+	vertical-align: top;
+}
+
+nav,
+aside {
+   background-color: yellow;
+   text-align:center;
+   min-width: 120px; 
+}
+
+nav {
+    margin: 10px 15px 10px 15px;
+}
+
+aside {
+    margin: 10px 15px 10px 15px;
+}
+
+section {
+    background-color:yellow;
+    margin: 10px 20px 10px 20px;
+    text-align:center;
+    min-width: 250px;
+}
+
+section header,
+section footer {
+    background-color: #666;
+    margin: 15px 15px 15px 15px;
+    min-height: 35px;
+    max-height: 35px;
+}
+
+section article {
+    background-color: #666;
+    margin: 15px 15px;
+    min-height: 195px;
+    max-height: 195px;
+    padding: 0.5px 1px;
+    
+}
+
+
+.main {
+    background-color: #666;
+    border-radius: 5px;
+    max-width: 600px;
+    min-width: 600px;
+    margin: 5px auto;
+}
+
+header,
+footer,
+aside,
+nav,
+article,
+section {
+	border-radius: 5px;
+    text-align:center;
+}
+
+/* DOUBT: I try to define the grid defining the exactly pixels of each box and then aligning using the block and 
+inline-block display but some boxes margin don't work as I expect; I think that is because of the <p> element
+inside of the boxes which I uses for see the boxes names */
+
+
+
+
+
+
+
