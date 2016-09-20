@@ -6,41 +6,38 @@
         <meta name="author" content="Andrés Palumbo"/>
         <meta name="description" content="example page" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <style>
+            label{
+                display: block;
+                margin: 5px;
+            }
+        </style>
     </head>
     <body>
         <form action="http://example.org/">
             <fieldset>   
                 <legend>Sign up</legend>
-                <p>
-                    <label>First name: <input name="first-name" required type="text"> </label>
-                </p>
-                <p>
-                    <label>Last name: <input name="last-name" required type="text"> </label>
-                </p>
-                <p>
-                    <label>Email: <input name="email" required type="email"> </label>
-                </p>
-                <p>
-                    <label>Birthday: <input name="birthday" required type="date"> </label>
-                </p>
-                <p>
-                    <label for="fav-sport">What is your favourite sport?</label>
-                    <select name="favourite-sport" id="fav-sport">
-                        <option>Football</option>
-                        <option>Basketball</option>
-                        <option>Voleyball</option>
-                        <option>Rugby</option>
-                        <option>Swimming</option>
-                        <option>Running</option>
-                        <option selected>Other</option>
-                    </select>
-                </p>
-                <p>
-                    Bio:<br/>
-                    <textarea name="first-name" rows="4" cols="40" placeholder ="Short description about you"></textarea><br/>
-                </p>
-                <button type="submit">Submit</button>
-                <button type="reset">Clear</button>        
+                    <label>First name: <input name="first-name" required type="text"></label>
+                    <label>Last name: <input name="last-name" required type="text"></label>
+                    <label>Email: <input name="email" required type="email"></label>
+                    <label>Birthday: <input name="birthday" required type="date"></label>
+                    <label>What is your favourite sport? 
+                        <select name="favourite-sport">
+                            <option>Football</option>
+                            <option>Basketball</option>
+                            <option>Voleyball</option>
+                            <option>Rugby</option>
+                            <option>Swimming</option>
+                            <option>Running</option>
+                            <option selected>Other</option>
+                        </select>
+                    </label>
+                    <label for="bio_textarea">Bio:</label>
+                    <textarea id="bio_textarea" name="first-name" rows="4" cols="40" placeholder ="Short description about you"></textarea>
+                <div class="button-wrapper">    
+                    <button type="submit">Submit</button>
+                    <button type="reset">Clear</button>        
+                </div>
             </fieldset>
         </form>
     </body>
