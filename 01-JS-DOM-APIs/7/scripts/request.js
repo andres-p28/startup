@@ -9,16 +9,14 @@
 function request(config) {
     // Return a new promise.
     return new Promise(function(resolve, reject) {
-        let req = new XMLHttpRequest();
-        let uri = config.url;
+        var req = new XMLHttpRequest();
+        var uri = config.url;
 
         /* Enconde arguments in a query string and attach into the url */
 
         if (config.args && (method === 'POST' || method === 'PUT')) {
             uri += '?';
-            let argcount = 0;
-            let args = config.args;
-
+            var argcount = 0;
             for (var key in args) {
             if (args.hasOwnProperty(key)) {
               if (argcount++) {
@@ -47,29 +45,29 @@ function request(config) {
   });
 }
 
+
 /* Testing re-implementing exercise 6 */
 
-window.onload = function () {
-    const myButton = document.getElementById("button");
-    const myArticle = document.querySelector("#section article");
-    const myHeader = document.querySelector("#section h2");
-    let req_config = {method:'GET', url:"http://api.icndb.com/jokes/random"};
+const myButton = document.getElementById("button");
+myButton.addEventListener("click", fetchJoke);
 
-    myButton.addEventListener("click", fetchJoke);
-}
+const myArticle = document.querySelector("#helloworld-section article");
+const myHeader = document.querySelector("#helloworld-section h2");
+
+let req_config = {method:'GET', url:"http://api.icndb.com/jokes/random"};
 
 function fetchJoke() {
     console.log(req_config);
-    var prom = request(req_config); //Create a promise for the request
+    var prom = request(req_config);
 
-    prom.then(function(response) { //If the promise is fullfilled, parse JSON and update the article content
+    prom.then(function(response) {
         console.log("Sucess");
         let text = JSON.parse(response);
-        myHeader.textContent = "This section should show a joke now";   
-        myArticle.textContent = text.value.joke;
-        }, function(reason) { // If the promise is rejected, change the section color to red, and display an error msg
+        myHeader.innerHTML = "This section should show a joke now";   
+        myArticle.innerHTML = text.value.joke;
+        }, function(reason) {
             document.getElementById("section").style.color = "red";
-            console.log("Error",reason);
+            console.log("Error", reason);
         });
 }
 
