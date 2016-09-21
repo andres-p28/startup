@@ -1,30 +1,15 @@
 section {
-	text-align: center;
+    text-align: center;
 }
 
 .display-block {
-	text-align: center
-	display: block;
+    text-align: center
+    display: block;
 }
 
 .hidden {
-	visibility: hidden;
+    visibility: hidden;
 }
-
-
-/*
-.hidden {
-	opacity: 0;
-	transition: opacity 10s linear 10s;
-    moz-transition: opacity 10s linear 10s;
-   -webkit-transition: opacity 10s linear 10s;
-
-}
-
-.visible {
-	opacity: 1;
-}
-*/
 
 .visible {
     visibility: visible;

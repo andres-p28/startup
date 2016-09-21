@@ -9,14 +9,16 @@
 function request(config) {
     // Return a new promise.
     return new Promise(function(resolve, reject) {
-        var req = new XMLHttpRequest();
-        var uri = config.url;
+        let req = new XMLHttpRequest();
+        let uri = config.url;
 
         /* Enconde arguments in a query string and attach into the url */
 
         if (config.args && (method === 'POST' || method === 'PUT')) {
             uri += '?';
-            var argcount = 0;
+            let argcount = 0;
+            let args = config.args;
+
             for (var key in args) {
             if (args.hasOwnProperty(key)) {
               if (argcount++) {
@@ -45,29 +47,29 @@ function request(config) {
   });
 }
 
-
 /* Testing re-implementing exercise 6 */
 
-const myButton = document.getElementById("button");
-myButton.addEventListener("click", fetchJoke);
+window.onload = function () {
+    const myButton = document.getElementById("button");
+    const myArticle = document.querySelector("#section article");
+    const myHeader = document.querySelector("#section h2");
+    let req_config = {method:'GET', url:"http://api.icndb.com/jokes/random"};
 
-const myArticle = document.querySelector("#section article");
-const myHeader = document.querySelector("#section h2");
-
-let req_config = {method:'GET', url:"http://api.icndb.com/jokes/random"};
+    myButton.addEventListener("click", fetchJoke);
+}
 
 function fetchJoke() {
     console.log(req_config);
-    var prom = request(req_config);
+    var prom = request(req_config); //Create a promise for the request
 
-    prom.then(function(response) {
+    prom.then(function(response) { //If the promise is fullfilled, parse JSON and update the article content
         console.log("Sucess");
         let text = JSON.parse(response);
-        myHeader.innerHTML = "This section should show a joke now";   
-        myArticle.innerHTML = text.value.joke;
-        }, function(reason) {
+        myHeader.textContent = "This section should show a joke now";   
+        myArticle.textContent = text.value.joke;
+        }, function(reason) { // If the promise is rejected, change the section color to red, and display an error msg
             document.getElementById("section").style.color = "red";
-            console.log("Error", reason);
+            console.log("Error",reason);
         });
 }
 
