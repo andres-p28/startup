@@ -16,9 +16,8 @@ class EventEmitter {
     emit(eventName, args) {
         let i;
         const listeners = this.events.get(eventName);
-        console.log("The " + eventName + " event has been emitted");
         for (i = 0; i < listeners.length; i++) {
-            listeners[i](args);        
+            listeners[i]((`The ${eventName} has been emited`), args);        
         }
     }
 
