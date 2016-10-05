@@ -10,28 +10,30 @@ myApp.controller('MoviesCtrl', ['$scope', '$rootScope', ($scope, $rootScope, mov
     $scope.movies = {};
     $scope.movies.list = angular.fromJson(localStorage.getItem("movieList"));
 
-    $scope.update = () => {
-        $scope.movies.list = angular.fromJson(localStorage.getItem("movieList"));
+    let update = () => {
+        localStorage.setItem("movieList", JSON.stringify($scope.movies.list));
     }
 
     $scope.showMovie = (movie) => {
-        //movieInfo.movie = movie;
-        //movieInfo.mode = "read";
-        $rootScope.$broadcast('detail', movie);
+        $rootScope.$broadcast('detail', angular.copy(movie));
     }
 
     $scope.editMovie = (movie) => {
-        //movieInfo.movie = movie;
-        //movieInfo.mode = "readwrite";
         $rootScope.$broadcast("edit", movie);
     }
 
     $scope.deleteMovie = (index) => {
         $scope.movies.list.splice(index,1);
+        update();
     }
 
     $scope.$on("addMovie", (event, data) => {
         $scope.movies.list.push(angular.copy(data));
+        update();
+    })
+
+    $scope.$on("update", (event, data) => {
+        update();
     })
 
 }]);
@@ -54,45 +56,18 @@ myApp.controller('adeCtrl', ['$scope','$rootScope', ($scope, $rootScope, movieCl
 
     $scope.addMovie = (movieToAdd) => {
         $rootScope.$broadcast("addMovie", movieToAdd);
+        $scope.isAdding = false;
+    }
+
+    $scope.saveEdit = () => {
+        $rootScope.$broadcast("update");
+        $scope.isEditing = false;
     }
 
 }]);
 
 /*
-
-$scope.movies = {};
-
-    $scope.movies.list = [{
-        "title": "The Shawshank Redemption",
-        "year": "1994",
-        "duration": "142"
-    },{
-        "title": "Inception",
-        "year": "2010",
-        "duration": "148"
-    },{
-        "title": "The Hobbit: An Unexpected Journey",
-        "year": "2012",
-        "duration": "169"
-    },{
-        "title": "Back to the Future",
-        "year": "1985",
-        "duration": "116"
-    }];
-
-    $scope.isVisible = false;
-    $scope.isEditing = false;
-
-    $scope.deleteMovie = (index) => {
-        $scope.movies.list.splice(index,1);
-    }
-
-    $scope.addMovie = (movie) => {
-        $scope.movies.list.push(angular.copy(movie));
-    }
-
-    $scope.saveMovie = (movie, index) => {
-        $scope.movies.list[index] = angular.copy(movie);
-        console.log($scope.movies.list);
-    }
+    I read a lot of comment about sharing data between controllers should be done using factory/services
+    instead of broadcasting events because of perfomance, but the comments weren't updated; so at the moment, 
+    factory/services approch still being better than broadcasting/listening?
 */

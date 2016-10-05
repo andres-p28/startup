@@ -13,7 +13,7 @@
         <div class="container" ng-app="myApp">
             <div class="column listColumn" ng-controller="MoviesCtrl">
                 <ul>
-                    <li class="movieItem" ng-repeat="movie in movies.list">
+                    <li class="movieItem" ng-repeat="movie in movies.list track by $index">
                         <span class="movieTitle">{{movie.title}}</span>
                         <div class="linkWrapper">
                             <a class="link detailLink" href="#" ng-click="showMovie(movie)">Show details</a>
@@ -25,7 +25,7 @@
             </div>
             <div class="column moreInfoColumn" ng-controller="adeCtrl">
                 <div class="row addRow">
-                    <button ng-click="isAdding = !isAdding; isEditing = false; showDetails = false">Add</button>
+                    <button ng-click="isAdding = !isAdding; isEditing = false; showDetails = false; movie={}">Add</button>
                 </div>
                 <div class="row formRow">   
                     <form class="movieForm addMovieForm" ng-show="isAdding">
@@ -46,7 +46,7 @@
                             <label>Year: <input type="text" ng-model="movie.year"></label>
                             <label>Duration: <input type="text" ng-model="movie.duration"></label>
                             <div class="buttonWrapper">
-                                <button ng-click="addMovie(newMovie)">Save</button>
+                                <button ng-click="saveEdit()">Save</button>
                             </div>
                         </fieldset>
                     </form>
