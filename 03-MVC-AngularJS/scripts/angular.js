@@ -5,7 +5,7 @@ myApp.factory('movieClick', () => {
     return movieInfo;
 });
 
-myApp.controller('MoviesCtrl', ['$scope', '$rootScope', ($rootScope, $scope, movieClick) => {
+myApp.controller('MoviesCtrl', ['$scope', '$rootScope', ($scope, $rootScope, movieClick) => {
     
     $scope.movies = {};
     $scope.movies.list = angular.fromJson(localStorage.getItem("movieList"));
@@ -17,7 +17,7 @@ myApp.controller('MoviesCtrl', ['$scope', '$rootScope', ($rootScope, $scope, mov
     $scope.showMovie = (movie) => {
         //movieInfo.movie = movie;
         //movieInfo.mode = "read";
-        $rootScope.$broadcast("showDetails", movie);
+        $rootScope.$broadcast('detail', movie);
     }
 
     $scope.editMovie = (movie) => {
@@ -30,24 +30,24 @@ myApp.controller('MoviesCtrl', ['$scope', '$rootScope', ($rootScope, $scope, mov
         $scope.movies.list.splice(index,1);
     }
 
-    $rootScope.$on("addMovie", (event, data) => {
-        $scope.movies.list.push(data);
+    $scope.$on("addMovie", (event, data) => {
+        $scope.movies.list.push(angular.copy(data));
     })
 
 }]);
 
 
-myApp.controller('adeCtrl', ['$scope','$rootScope', ($rootScope, $scope, movieClick) => {
+myApp.controller('adeCtrl', ['$scope','$rootScope', ($scope, $rootScope, movieClick) => { 
     $scope.isAdding = false;
     $scope.isEditing = false;
     $scope.showDetails = false;
 
-    $rootScope.$on("showDetails", (event, data) => {
+    $scope.$on('detail', (event, data) => {
         $scope.showDetails = true;
         $scope.movie = data;
     })
 
-    $rootScope.$on("edit", (event, data) => {
+    $scope.$on("edit", (event, data) => {
         $scope.isEditing = true;
         $scope.movie = data;
     })
