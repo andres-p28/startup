@@ -1,0 +1,29 @@
+* {
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+}
+
+.container {
+    margin:20px;
+    min-width: 80%
+}
+.addRow {
+    text-align: center;
+}
+
+.movieItem {
+    margin: 15px;
+}
+
+.column {
+    border: 1px solid black; 
+    display: inline-block;
+    vertical-align: top;
+    width: 40%;
+}
+
+label{
+    display: block;
+    margin: 5px;
+ }

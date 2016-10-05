@@ -1,0 +1,67 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <title>Exercise 1</title>
+        <meta charset="UTF-8">
+        <meta name="author" content="Andrés Palumbo"/>
+        <meta name="description" content="example page" />
+        <link rel="stylesheet" href="styles/normalize.css" type="text/css">
+        <link rel="stylesheet" href="styles/styles.css" type="text/css">
+        <script src = "https://ajax.googleapis.com/ajax/libs/angularjs/1.5.2/angular.min.js"></script>
+    </head>
+    <body>
+        <div class="container" ng-app="myApp">
+            <div class="column listColumn" ng-controller="MoviesCtrl">
+                <ul>
+                    <li class="movieItem" ng-repeat="movie in movies.list">
+                        <span class="movieTitle">{{movie.title}}</span>
+                        <div class="linkWrapper">
+                            <a class="link detailLink" href="#" ng-click="showMovie(movie)">Show details</a>
+                            <a class="link deleteLink" href="" ng-click="deleteMovie($index)">Delete</a>
+                            <a class="link editLink" href="#" ng-click="editMovie(movie)">Edit</a>
+                        </div>    
+                    </li>
+                </ul>
+            </div>
+            <div class="column moreInfoColumn" ng-controller="adeCtrl">
+                <div class="row addRow">
+                    <button ng-click="isAdding = !isAdding; isEditing = false; showDetails = false">Add</button>
+                </div>
+                <div class="row formRow">   
+                    <form class="movieForm addMovieForm" ng-show="isAdding">
+                        <fieldset>
+                            <legend>Add movie</legend>
+                            <label>Title: <input type="text" ng-model="movie.title"></label>
+                            <label>Year: <input type="text" ng-model="movie.year"></label>
+                            <label>Duration: <input type="text" ng-model="movie.duration"></label>
+                            <div class="buttonWrapper">
+                                <button ng-click="addMovie(movie)">Save</button>
+                            </div>
+                        </fieldset>
+                    </form>
+                    <form class="movieForm editMovieForm" ng-show="isEditing">
+                        <fieldset>
+                            <legend>Add movie</legend>
+                            <label>Title: <input type="text" ng-model="movie.title"></label>
+                            <label>Year: <input type="text" ng-model="movie.year"></label>
+                            <label>Duration: <input type="text" ng-model="movie.duration"></label>
+                            <div class="buttonWrapper">
+                                <button ng-click="addMovie(newMovie)">Save</button>
+                            </div>
+                        </fieldset>
+                    </form>
+                    <form class="movieForm detailMovieForm" ng-show="showDetails">
+                        <fieldset>
+                            <legend>Add movie</legend>
+                            <label>Title: <input type="text" ng-model="movie.title"></label>
+                            <label>Year: <input type="text" ng-model="movie.year"></label>
+                            <label>Duration: <input type="text" ng-model="movie.duration"></label>
+                        </fieldset>
+                    </form>               
+                </div>
+            </div>
+        </div>
+    </body>
+    <script src="scripts/init.js" type="text/javascript"></script>
+    <script src="scripts/angular.js" type="text/javascript"></script>
+</html>
