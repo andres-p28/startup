@@ -1,73 +1,115 @@
-var myApp = angular.module('myApp', []);
+var myApp = angular.module('myApp', ['ngRoute']);
 
-myApp.factory('movieClick', () => {
-    let movieInfo = {};
-    return movieInfo;
+myApp.factory('movieData', function() { /* Both factory and service are singletons */
+
+    let movieData = {};
+
+    movieData.list = angular.fromJson(localStorage.getItem("movieList"));
+
+    movieData.add = function(data) {
+        movieData.list.push(data);
+        localStorage.setItem("movieList", JSON.stringify(movieData.list));
+    };
+
+    movieData.delete = function(itemIndex) {
+        movieData.list.splice(itemIndex,1);
+        localStorage.setItem("movieList", JSON.stringify(movieData.list));
+    };
+    movieData.getItem = function(itemIndex) {
+        return movieData.list[itemIndex];
+    };
+    movieData.saveChange = function() {
+        localStorage.setItem("movieList", JSON.stringify(movieData.list));  
+    };
+    movieData.setIndex = function(newIndex) {
+        movieData.index = newIndex;
+    };
+
+    return movieData;
 });
 
-myApp.controller('MoviesCtrl', ['$scope', '$rootScope', ($scope, $rootScope, movieClick) => {
+
+myApp.controller('listCtrl', ['$scope', 'movieData', '$route', function($scope, movieData, $route) {
     
     $scope.movies = {};
-    $scope.movies.list = angular.fromJson(localStorage.getItem("movieList"));
+    $scope.movies.list = movieData.list;
 
-    let update = () => {
-        localStorage.setItem("movieList", JSON.stringify($scope.movies.list));
+    $scope.setmovieIndex = function(index) {
+        movieData.setIndex(index);
     }
 
-    $scope.showMovie = (movie) => {
-        $rootScope.$broadcast('detail', angular.copy(movie));
+    $scope.reloadView = function() {
+        $route.reload();
     }
-
-    $scope.editMovie = (movie) => {
-        $rootScope.$broadcast("edit", movie);
-    }
-
-    $scope.deleteMovie = (index) => {
-        $scope.movies.list.splice(index,1);
-        update();
-    }
-
-    $scope.$on("addMovie", (event, data) => {
-        $scope.movies.list.push(angular.copy(data));
-        update();
-    })
-
-    $scope.$on("update", (event, data) => {
-        update();
-    })
-
 }]);
 
+myApp.controller('addCtrl', ['$scope', 'movieData', '$location', function($scope, movieData, $location)  {
+    $scope.mode = 'Add movie';
+    $scope.button = 'Save';
+    $scope.isDisabled = false;
 
-myApp.controller('adeCtrl', ['$scope','$rootScope', ($scope, $rootScope, movieClick) => { 
-    $scope.isAdding = false;
-    $scope.isEditing = false;
-    $scope.showDetails = false;
-
-    $scope.$on('detail', (event, data) => {
-        $scope.showDetails = true;
-        $scope.movie = data;
-    })
-
-    $scope.$on("edit", (event, data) => {
-        $scope.isEditing = true;
-        $scope.movie = data;
-    })
-
-    $scope.addMovie = (movieToAdd) => {
-        $rootScope.$broadcast("addMovie", movieToAdd);
-        $scope.isAdding = false;
-    }
-
-    $scope.saveEdit = () => {
-        $rootScope.$broadcast("update");
-        $scope.isEditing = false;
-    }
-
+    $scope.buttonClick = function() {
+        movieData.add(angular.copy($scope.movie));
+        $scope.movie = {};
+        $location.path('/');
+    };
 }]);
 
-/*
-    I read a lot of comment about sharing data between controllers should be done using factory/services
-    instead of broadcasting events because of perfomance, but the comments weren't updated; so at the moment, 
-    factory/services approch still being better than broadcasting/listening?
-*/
+myApp.controller('showCtrl', ['$scope', 'movieData', '$location', function($scope, movieData, $location) {
+    $scope.mode = 'Details';
+    $scope.button = 'Close';
+    $scope.isDisabled = true;
+    $scope.movie = movieData.list[movieData.index];
+
+    $scope.buttonClick = function() {
+        $location.path('/');    
+    };
+}]);
+
+myApp.controller('delCtrl', ['$scope', 'movieData', function($scope, movieData) {
+    movieData.delete(movieData.index);
+}]);
+
+myApp.controller('editCtrl', ['$scope', 'movieData', '$location', function($scope, movieData, $location) {
+    $scope.mode = 'Edit movie';
+    $scope.button = 'Save';
+    $scope.isDisabled = false;
+    if (movieData.index != null)
+        $scope.movie = movieData.getItem(movieData.index);
+    else
+        $location.path('/add');
+
+    $scope.buttonClick = function() {
+        movieData.saveChange();
+        $scope.movie = {};
+        $location.path('/'); 
+    };    
+}])
+
+myApp.config(["$routeProvider", function($routeProvider) {
+    $routeProvider
+    .when('/', {
+        template: ''
+    })
+    .when('/add', {       
+        templateUrl: 'form.html',
+        controller: 'addCtrl'
+    })
+    .when('/edit', {
+        templateUrl: 'form.html',
+        controller: 'editCtrl'
+    })
+    .when('/details', {
+        templateUrl: 'form.html',
+        controller: 'showCtrl'
+    })
+    .when('/delete', {
+    template: '',
+    controller: 'delCtrl',
+    redirectTo: '/'
+    })
+    .otherwise({
+        redirectTo: '/'
+    });
+}]);
+

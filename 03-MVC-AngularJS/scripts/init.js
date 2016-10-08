@@ -14,5 +14,12 @@ let movieList_init = [new Movie("The Shawshank Redemption", 1994, 142),
                       new Movie("Back to the Future", 1985, 116)
                       ];    
 
-if (localStorage.getItem("movieList") == null)
+let data = localStorage.getItem("movieList");
+
+if (data == null) {
+    localStorage.setItem("movieList", JSON.stringify(movieList_init));    
+}
+else if (JSON.parse(data).length == 0) {
     localStorage.setItem("movieList", JSON.stringify(movieList_init));
+}  
+    
