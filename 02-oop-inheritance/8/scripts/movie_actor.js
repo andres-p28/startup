@@ -63,9 +63,10 @@ class Actor {
 
 let hobbit = new Movie("El hobbit", 2012, 169);
 let ian = new Actor("Ian McKellen", 77);
-let otherCast = [new Actor("Martin Freeman", 45),
-                 new Actor("Richard Armitage", 45),
-                 new Actor("Sylvester McCoy", 71)
-                ];
+let otherCast = [
+    new Actor("Martin Freeman", 45),
+    new Actor("Richard Armitage", 45),
+    new Actor("Sylvester McCoy", 71)
+    ];
 
 
