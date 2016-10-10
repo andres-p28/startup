@@ -27,32 +27,69 @@ myApp.factory('requestService', function($http){
     };
 });
 */
+
 myApp.constant('apiConfig', {
     baseUrl: 'https://us.api.battle.net',
     apikey: '4psjyubs6z3gwzsquuqbp69vtnbgvfte',
     locale:'en_US'
 });
 
-myApp.factory('realmStatus', function($http, apiConfig) {
+myApp.factory('realmInfo', function($http, apiConfig) {
+
+    let names = [];
 
     function getList() {
         return $http({
             method: 'GET',
             url: apiConfig.baseUrl + '/wow/realm/status',
             params: apiConfig
+        }).success(function(data) {
+            names = data.realms.map(function(obj) {return obj.name});
         });
     };
     
+    
     return {
-
-        getList: getList
+        /**
+         * @return {Object} promise
+         */
+        getList: getList,
+        /**
+         *{Array} realms names
+         */
+        names : names   
     }
-})
+});
 
-myApp.controller('realmStatusCtrl', ['$scope', 'realmStatus', function($scope, realmStatus) {
+myApp.factory('characterInfo', function($http, apiConfig) {
+    
+    function getCharInfo(realm, characterName) {
+        let params = {
+            apikey: apiConfig.apikey,
+            locale: apiConfig.locale,
+            //fields: 'guild,items,pvp,stats'
+        }
+        return $http({
+            method: 'GET',
+            url: apiConfig.baseUrl + '/wow/character/'+realm+'/'+characterName,
+            params: params  
+        });
+    };
+
+    return {
+        /**
+         * @param {String} realm name
+         * @param {String} character name
+         * @return {Object} promise
+         */
+         getCharInfo: getCharInfo
+    }
+});
+
+myApp.controller('realmStatusCtrl', ['$scope', 'realmInfo', function($scope, realmInfo) {
     $scope.realmInfo = {};
 
-    realmStatus.getList().success(function(data) {
+    realmInfo.getList().success(function(data) {
         $scope.realmInfo.list = data.realms;
         console.log($scope.realmInfo.list);
     }).error(function(error, status){
@@ -61,10 +98,41 @@ myApp.controller('realmStatusCtrl', ['$scope', 'realmStatus', function($scope, r
     });    
 
     $scope.updateStatus = function() {
-        realmStatus.updateList();
-        $scope.realm.list = realmStatus.getList();
-    }
-}])
+        realmInfo.updateList();
+        $scope.realm.list = realmInfo.getList();
+    };
+}]);
+
+myApp.controller('characterInfoCtrl', ['$scope', 'characterInfo', 'realmInfo', function($scope, characterInfo, realmInfo) {
+    $scope.characterList = [];
+    $scope.queryRealm = 'Rexxar';
+    $scope.queryName = 'Vral';
+    
+    $scope.searchButton = function() {
+        $scope.characterList = [];
+        if ($scope.queryRealm === 'All') {
+            for(let i = 0; i < realmInfo.names.length; i++) {
+                let realm = realmInfo.names[i];
+                characterInfo.getCharInfo(realm, $scope.queryName).success(function(data) {
+                    $scope.characterList.push(data);
+                    console.log($scope.characterList);
+                }).error(function() {
+                    $scope.characterList = [];
+                    $scope.requestError = true;
+                });
+            }
+        } else {
+            characterInfo.getCharInfo($scope.queryRealm, $scope.queryName).success(function(data) {
+                $scope.characterList.push(data);
+                console.log($scope.characterList);
+            }).error(function() {
+                $scope.characterList = [];
+                $scope.requestError = true;
+            });
+        }      
+    };
+}]);
+
 
 
 

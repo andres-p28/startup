@@ -20,7 +20,9 @@
             </nav>
         </header>
         <div class="container" ng-app="myApp">
+              
             <div class=container-realm-table ng-controller="realmStatusCtrl">
+        <!-- 
                 <table>
                     <thead>
                         <tr>Status</tr>
@@ -36,9 +38,10 @@
                     </tr>
                 </table>                 
             </div>
+        -->
+            <a href= "" ng-controller="characterInfoCtrl" ng-click = "searchButton()">Character request</a>
 
-
-            <!-- <div class="viewContainer" ng-view></div> -->
+             <div class="viewContainer" ng-view> </div> 
         </div>
     <script src="angular.js" type="text/javascript"></script>    
     </body>
