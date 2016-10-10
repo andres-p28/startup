@@ -1,0 +1,11 @@
+* {
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+}
+
+.mainNav {
+    padding-left: 30px;
+    text-align: center;
+    width: 600px;
+}

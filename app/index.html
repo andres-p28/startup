@@ -1,0 +1,45 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <title>Exercise 1</title>
+        <meta charset="UTF-8">
+        <meta name="author" content="Andrés Palumbo"/>
+        <meta name="description" content="example page" />
+        <link rel="stylesheet" href="styles/normalize.css" type="text/css">
+        <link rel="stylesheet" href="styles/styles.css" type="text/css">
+        <script src = "https://ajax.googleapis.com/ajax/libs/angularjs/1.5.2/angular.min.js"></script>
+        <script src = "https://ajax.googleapis.com/ajax/libs/angularjs/1.5.2/angular-route.js"></script>
+    </head>
+    <body>
+        <header>
+            <h2> Taz'dingo traveller! Are you looking for some cool information?</h2>
+            <nav class="main-nav">
+                <a class="nav-link" href="/realmStatus">Realm Status</a>
+                <a class="nav-link" href="/realmStatus">Characters</a>
+                <a class="nav-link" href="/realmStatus">Guilds</a>    
+            </nav>
+        </header>
+        <div class="container" ng-app="myApp">
+            <div class=container-realm-table ng-controller="realmStatusCtrl">
+                <table>
+                    <thead>
+                        <tr>Status</tr>
+                        <tr>Realm Name</tr>
+                        <tr>Type</tr>
+                        <tr>Population</tr>
+                    </thead>
+                    <tr ng-repeat="aRealm in realmInfo.list"> 
+                        <td>{{aRealm.status}}</td>
+                        <td>{{aRealm.name}}</td>
+                        <td>{{aRealm.type}}</td>
+                        <td>{{aRealm.population}}</td>
+                    </tr>
+                </table>                 
+            </div>
+
+
+            <!-- <div class="viewContainer" ng-view></div> -->
+        </div>
+    <script src="angular.js" type="text/javascript"></script>    
+    </body>
+</html>
