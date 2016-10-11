@@ -35,7 +35,6 @@ myApp.constant('apiConfig', {
 });
 
 myApp.factory('realmInfo', function($http, apiConfig) {
-
     let names = [];
 
     function getList() {
@@ -43,31 +42,33 @@ myApp.factory('realmInfo', function($http, apiConfig) {
             method: 'GET',
             url: apiConfig.baseUrl + '/wow/realm/status',
             params: apiConfig
-        }).success(function(data) {
-            names = data.realms.map(function(obj) {return obj.name});
         });
     };
-    
     
     return {
         /**
          * @return {Object} promise
          */
         getList: getList,
-        /**
-         *{Array} realms names
-         */
-        names : names   
     }
 });
-
+/*
+myApp.service('realmNames', function(realmInfo) {
+    realmInfo.getList().success(function(data) {
+            this.list = data.realms.map((obj) => {return obj.name});
+            console.log("names ready" + this); //testing
+        }).error(function() {
+            this.list = [];
+        });
+});
+*/
 myApp.factory('characterInfo', function($http, apiConfig) {
     
     function getCharInfo(realm, characterName) {
         let params = {
             apikey: apiConfig.apikey,
             locale: apiConfig.locale,
-            //fields: 'guild,items,pvp,stats'
+            fields: 'guild,items,pvp,stats'
         }
         return $http({
             method: 'GET',
@@ -91,7 +92,7 @@ myApp.controller('realmStatusCtrl', ['$scope', 'realmInfo', function($scope, rea
 
     realmInfo.getList().success(function(data) {
         $scope.realmInfo.list = data.realms;
-        console.log($scope.realmInfo.list);
+        //console.log($scope.realmInfo.list);
     }).error(function(error, status){
         $scope.requestError = true;
         $scope.errorData = {error: error, status: status};
@@ -103,31 +104,40 @@ myApp.controller('realmStatusCtrl', ['$scope', 'realmInfo', function($scope, rea
     };
 }]);
 
-myApp.controller('characterInfoCtrl', ['$scope', 'characterInfo', 'realmInfo', function($scope, characterInfo, realmInfo) {
+myApp.controller('characterInfoCtrl', ['$scope', 'characterInfo', 'realmInfo', '$interval', function($scope, characterInfo, 
+    realmInfo, $interval) {
+    
     $scope.characterList = [];
-    $scope.queryRealm = 'Rexxar';
-    $scope.queryName = 'Vral';
+    $scope.queryRealm = 'All';
+    $scope.queryName = 'Chigz';
+
+    realmInfo.getList().success(function(data) {
+            $scope.realmNames = data.realms.map((obj) => {return obj.name});
+            console.log("names ready"); //testing
+        }).error(function() {
+            $scope.realmNames = [];
+        });
     
     $scope.searchButton = function() {
         $scope.characterList = [];
-        if ($scope.queryRealm === 'All') {
-            for(let i = 0; i < realmInfo.names.length; i++) {
-                let realm = realmInfo.names[i];
+        if ($scope.queryRealm == 'All') {
+            let i = 0;
+            $interval(function() {
+                let realm = $scope.realmNames[i];
                 characterInfo.getCharInfo(realm, $scope.queryName).success(function(data) {
                     $scope.characterList.push(data);
-                    console.log($scope.characterList);
-                }).error(function() {
-                    $scope.characterList = [];
-                    $scope.requestError = true;
+                    console.log($scope.characterList); //testing
+                }).error(function(error) {
+                    console.log("char req :" +error); //testing
                 });
-            }
+                i++;   
+            }, 50, 25/*$scope.realmNames.length*/);     
         } else {
             characterInfo.getCharInfo($scope.queryRealm, $scope.queryName).success(function(data) {
                 $scope.characterList.push(data);
                 console.log($scope.characterList);
             }).error(function() {
-                $scope.characterList = [];
-                $scope.requestError = true;
+                console.log("reqerror"); //testing
             });
         }      
     };
