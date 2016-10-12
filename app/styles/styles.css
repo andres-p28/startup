@@ -4,10 +4,29 @@
     box-sizing: border-box;
 }
 
-.mainNav {
-    padding-left: 30px;
-    text-align: center;
-    width: 600px;
+/* realm.html */
+
+.realm-table .realm-status {
+
 }
+
+.realm-table .realm-status_true {
+    color: green;
+}
+
+.realm-table .realm-status_false {
+    color: red;
+}
+
+/* charactersearch html */
+
+.display-inline {
+    display: inline-block;
+}
+
+.search-box {
+    width: 50%;
+}
+
 
 

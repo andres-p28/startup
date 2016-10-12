@@ -1,0 +1,28 @@
+<div class="wrapper-search-character">
+    <input type="search" class="display-inline search-box form-control" ng-model="queryName" placeholder="Enter character name..." />
+    <select class="display-inline selectpicker select-realm" ng-model="queryRealm">
+        <option selected>All</option>
+        <option ng-repeat="names in realmNames">{{names}}</option>
+    </select>
+    <a type="button" class="btn btn-default display-inline search-button" href="#charinfo" aria-label="Search">
+        <span class="glyphicon glyphicon-search" aria-hidden="true"></span>
+    </a>
+</div>
+<table class="basic-info-table table table-responsive table-hover">
+    <thead>
+        <tr>
+            <th scope="col">Status</th>
+            <th scope="col">Realm Name</th>
+            <th scope="col">Type</th>
+            <th scope="col">Population</th>
+        </tr>
+    </thead>
+    <tbody>    
+        <tr ng-repeat="aRealm in realmInfo.list"> 
+            <td class="realm-status">{{aRealm.status}}</td>
+            <td>{{aRealm.name}}</td>
+            <td>{{aRealm.type}}</td>
+            <td>{{aRealm.population}}</td>
+        </tr>
+    </tbody>    
+</table>    

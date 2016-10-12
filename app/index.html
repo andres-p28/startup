@@ -5,46 +5,67 @@
         <meta charset="UTF-8">
         <meta name="author" content="Andrés Palumbo"/>
         <meta name="description" content="example page" />
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <script   src="http://code.jquery.com/jquery-3.1.1.js" integrity="sha256-16cdPddA6VdVInumRGo6IbivbERE8p7CQR3HzTBuELA="   crossorigin="anonymous"></script>
         <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
         <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
         <link rel="stylesheet" href="styles/normalize.css" type="text/css">
+        <link href="styles/simple-sidebar.css" rel="stylesheet" />
         <link rel="stylesheet" href="styles/styles.css" type="text/css">
         <script src = "https://ajax.googleapis.com/ajax/libs/angularjs/1.5.2/angular.min.js"></script>
         <script src = "https://ajax.googleapis.com/ajax/libs/angularjs/1.5.2/angular-route.js"></script>
     </head>
     <body>
-        <header>
-            <h2> Taz'dingo traveller! Are you looking for some cool information?</h2>
-            <nav class="main-nav">
-                <a class="nav-link" href="/realmStatus">Realm Status</a>
-                <a class="nav-link" href="/realmStatus">Characters</a>
-                <a class="nav-link" href="/realmStatus">Guilds</a>    
-            </nav>
-        </header>
-        <div class="container" ng-app="myApp">
-              
-            <div class=container-realm-table ng-controller="realmStatusCtrl">
-        <!-- 
-                <table>
-                    <thead>
-                        <tr>Status</tr>
-                        <tr>Realm Name</tr>
-                        <tr>Type</tr>
-                        <tr>Population</tr>
-                    </thead>
-                    <tr ng-repeat="aRealm in realmInfo.list"> 
-                        <td>{{aRealm.status}}</td>
-                        <td>{{aRealm.name}}</td>
-                        <td>{{aRealm.type}}</td>
-                        <td>{{aRealm.population}}</td>
-                    </tr>
-                </table>                 
-            </div>
-        -->
-            <a href= "" ng-controller="characterInfoCtrl" ng-click = "searchButton()">Character request // {{queryRealm}} // {{realmNames.list[0]}}</a>
 
-             <div class="viewContainer" ng-view> </div> 
+        <div id="wrapper">
+            <!-- Sidebar -->
+            <div id="sidebar-wrapper">
+                <ul class="sidebar-nav">
+                    <li class="sidebar-brand">
+                        <a href="#">
+                            Home
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#realmstatus">Realm Status</a>
+                    </li>
+                    <li>
+                        <a href="#charsearch">Search Character</a>
+                    </li>
+                    <li>
+                        <a href="#guildsearch">Search guild</a>
+                    </li>
+                    <li>
+                        <a href="#pvprank">PVP Leaderboard</a>
+                    </li>
+                </ul>
+            </div>
+            <!-- /#sidebar-wrapper -->
+
+            <!-- Page Content -->
+            <div id="page-content-wrapper" ng-app="myApp">
+                <div class="container-fluid">
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <a href="#menu-toggle" class="btn btn-default" id="menu-toggle">Menu</a>
+                            <div class="main-view" ng-view></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- /#page-content-wrapper -->
+
         </div>
-    <script src="angular.js" type="text/javascript"></script>    
+        <!-- /#wrapper -->
+        
+        <!-- Menu Toggle Script -->
+        <script>
+            $("#menu-toggle").click(function(e) {
+                e.preventDefault();
+                $("#wrapper").toggleClass("toggled");
+            });
+        </script>
+                 
+        <script src="angular.js" type="text/javascript"></script>    
     </body>
 </html>

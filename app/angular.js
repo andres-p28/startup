@@ -1,32 +1,4 @@
-let myApp = angular.module('myApp',[]);
-/*
-myApp.factory('requestService', function($http){
-
-    let httpVerb = 'GET';
-    let baseUrl = 'https://us.api.battle.net';
-    let apikey = '4psjyubs6z3gwzsquuqbp69vtnbgvfte';
-    let locale = 'en_US';
-    let fixedParams = {locale: locale, apikey: apikey};
-
-
-    function request(endpoint, qobj){
-        let queryObj = Object.assign(qobj, fixedParams);
-        return $http({
-            method: httpVerb,
-            url: baseUrl + endpoint,
-            params: queryObj
-        }).success(function(data){
-            return data;
-        }).error(function(error, status){
-            return {error : error, status: status};
-        });
-    };
-
-    return {
-        request: request
-    };
-});
-*/
+let myApp = angular.module('myApp',['ngRoute']);
 
 myApp.constant('apiConfig', {
     baseUrl: 'https://us.api.battle.net',
@@ -52,16 +24,7 @@ myApp.factory('realmInfo', function($http, apiConfig) {
         getList: getList,
     }
 });
-/*
-myApp.service('realmNames', function(realmInfo) {
-    realmInfo.getList().success(function(data) {
-            this.list = data.realms.map((obj) => {return obj.name});
-            console.log("names ready" + this); //testing
-        }).error(function() {
-            this.list = [];
-        });
-});
-*/
+
 myApp.factory('characterInfo', function($http, apiConfig) {
     
     function getCharInfo(realm, characterName) {
@@ -87,12 +50,36 @@ myApp.factory('characterInfo', function($http, apiConfig) {
     }
 });
 
+myApp.factory('guildInfo', function($http, apiConfig) {
+    function getGuildInfo(realm, guildName) {
+        let params = {
+            apikey: apiConfig.apikey,
+            locale: apiConfig.locale,
+            fields: 'members'
+        }
+        return $http({
+            method: 'GET',
+            url: apiConfig.baseUrl + '/wow/guild/'+realm+'/'+guildName,
+            params: params  
+        });
+    };
+
+    return {
+        /**
+         * @param {String} realm name
+         * @param {String} guild name
+         * @return {Object} promise
+         */
+         getGuildInfo: getGuildInfo
+    }
+
+});
+
 myApp.controller('realmStatusCtrl', ['$scope', 'realmInfo', function($scope, realmInfo) {
     $scope.realmInfo = {};
 
     realmInfo.getList().success(function(data) {
         $scope.realmInfo.list = data.realms;
-        //console.log($scope.realmInfo.list);
     }).error(function(error, status){
         $scope.requestError = true;
         $scope.errorData = {error: error, status: status};
@@ -104,7 +91,7 @@ myApp.controller('realmStatusCtrl', ['$scope', 'realmInfo', function($scope, rea
     };
 }]);
 
-myApp.controller('characterInfoCtrl', ['$scope', 'characterInfo', 'realmInfo', '$interval', function($scope, characterInfo, 
+myApp.controller('characterSearchCtrl', ['$scope', 'characterInfo', 'realmInfo', '$interval', function($scope, characterInfo, 
     realmInfo, $interval) {
     
     $scope.characterList = [];
@@ -126,7 +113,6 @@ myApp.controller('characterInfoCtrl', ['$scope', 'characterInfo', 'realmInfo', '
                 let realm = $scope.realmNames[i];
                 characterInfo.getCharInfo(realm, $scope.queryName).success(function(data) {
                     $scope.characterList.push(data);
-                    console.log($scope.characterList); //testing
                 }).error(function(error) {
                     console.log("char req :" +error); //testing
                 });
@@ -135,7 +121,6 @@ myApp.controller('characterInfoCtrl', ['$scope', 'characterInfo', 'realmInfo', '
         } else {
             characterInfo.getCharInfo($scope.queryRealm, $scope.queryName).success(function(data) {
                 $scope.characterList.push(data);
-                console.log($scope.characterList);
             }).error(function() {
                 console.log("reqerror"); //testing
             });
@@ -143,6 +128,48 @@ myApp.controller('characterInfoCtrl', ['$scope', 'characterInfo', 'realmInfo', '
     };
 }]);
 
+myApp.controller('characterInfoCtrl')
 
+myApp.controller('guildInfoCtrl', ['$scope', 'guildInfo', 'realmInfo', '$interval', function($scope, guildInfo, 
+    realmInfo, $interval) {
+
+    $scope.guildInfo = {};
+    guildInfo.getGuildInfo().success(function(data) {
+        $scope.guildInfo = data;
+    }).error(function(error) {
+        $scope.guildInfo = {};
+    });
+}]);
+
+myApp.config(["$routeProvider", function($routeProvider) {
+    $routeProvider
+    .when('/', {
+        template: ''
+        //templateUrl: 'main.html'
+    })
+    .when('/realmstatus', {       
+        templateUrl: 'realm.html',
+        controller: 'realmStatusCtrl'
+    })
+    .when('/charsearch', {
+        templateUrl: 'charactersearch.html',
+        controller: 'characterSearchCtrl'
+    })
+    .when('/charinfo', {
+        templateUrl: 'characterinfo.html',
+        controller: 'characterInfoCtrl' 
+    })
+    .when('/guildsearch', {
+        templateUrl: 'guild.html',
+        controller: 'guildInfoCtrl'
+    })
+    .when('/pvprank', {
+    template: '',
+    controller: ''
+    })
+    .otherwise({
+        redirectTo: '/'
+    });
+}]);
 
 
