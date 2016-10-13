@@ -41,6 +41,32 @@
     vertical-align: middle;
 }
 
+/* guildsearch.html */
+
+.guild-search .display-inline {
+    display: inline-block;
+}
+
+.guild-search .guild-search--input {
+    margin-top: 150px;
+    text-align: center;
+}
+
+.guild-search .guild-search--input .search-box {
+    width: 50%;
+}
+
+.guild-search .character-search--details {
+    margin-top: 50px;
+}
+
+.character-search .common-info-thumbnail {
+    border-radius: 3px;
+    height: 42px;
+    width: 42px;
+}
+
+
 /* characterinfo.html */
 
 .character-info .main-info {
@@ -91,13 +117,32 @@
 }
 
 .character-info .pvp-info--details span {
+    background-color: #cc4400;
     border: 1px solid black;
     border-radius: 3px;
+    color: white;
     display: block;
     margin-bottom: 5px;
     padding: 6px 12px;
 
 }
+
+/* guildinfo.html */
+
+.guild-info .main-info--icon {
+    color: yellow;
+}
+
+.guild-info .common-info-thumbnail {
+    border-radius: 3px;
+    height: 42px;
+    width: 42px;
+}
+
+.table.roster-info--details > tbody > tr > td {
+    vertical-align: middle;
+}
+
 
 
 /* index.html */

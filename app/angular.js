@@ -124,8 +124,63 @@ myApp.factory('characterSelected', function() {
          */
         getChar: getChar
     }
-
 });
+
+myApp.factory('guildSelected', function() {
+
+    let guild = {};
+
+    function setGuild(guildInfo) {
+        guild = guildInfo;
+    };
+
+    function getGuild() {
+        return guild;
+    };
+
+    return {
+        /**
+         * @param {Object} guild information    
+         */
+        setGuild: setGuild,
+        /**
+         * @return {Object} guild information    
+         */
+        getGuild: getGuild
+    }
+});
+
+myApp.controller('characterInfoCtrl',['$scope', 'character', 'slotData', function($scope, character, slotData) {
+    $scope.character = character;
+    $scope.slotList = slotData.list;
+
+    $scope.powerTypeClass = function(){
+        switch(character.stats.powerType) {
+            case 'mana':
+                return 'power-type-mana';
+            case 'maelstrom':
+                return 'power-type-maelstrom';
+            case 'energy':
+                return 'power-type-energy'; 
+            case 'rage':
+                return 'power-type-rage';
+            case 'runic':
+                return 'power-type-runic';
+            case 'focus':
+                return 'power-type-focus';               
+        }
+    };
+
+}]);
+
+myApp.controller('guildInfoCtrl', ['$scope', 'guild', function($scope, guild) {
+    $scope.guild = guild;
+
+    $scope.charInfo = function(character) {
+        characterSelected.setChar(character);
+        $location.path('/charinfo');
+    };
+}]);
 
 myApp.controller('realmStatusCtrl', ['$scope', 'realmInfo', function($scope, realmInfo) {
     $scope.realmInfo = {};
@@ -188,38 +243,49 @@ myApp.controller('characterSearchCtrl', ['$scope', 'characterInfo', 'realmInfo',
     };
 }]);
 
-myApp.controller('characterInfoCtrl',['$scope', 'character', 'slotData', function($scope, character, slotData) {
-    $scope.character = character;
-    $scope.slotList = slotData.list;
+myApp.controller('guildSearchCtrl', ['$scope', 'guildInfo', 'realmInfo', '$interval', 'guildSelected', '$location', 
+    function($scope, guildInfo, realmInfo, $interval, guildSelected, $location) {
 
-    $scope.powerTypeClass = function(){
-        switch(character.stats.powerType) {
-            case 'mana':
-                return 'power-type-mana';
-            case 'maelstrom':
-                return 'power-type-maelstrom';
-            case 'energy':
-                return 'power-type-energy'; 
-            case 'rage':
-                return 'power-type-rage';
-            case 'runic':
-                return 'power-type-runic';
-            case 'focus':
-                return 'power-type-focus';               
+    $scope.showResults = false;
+    $scope.guildList = [];
+    $scope.queryRealm = 'All';
+    $scope.queryName = 'do my dance';
+
+    realmInfo.getList().success(function(data) {
+            $scope.realmNames = data.realms.map((obj) => {return obj.name});
+        }).error(function() {
+            $scope.realmNames = [];
+            //TODO: catch error
+        });
+    
+    $scope.search = function() {
+        $scope.guildList = [];
+        if ($scope.queryRealm == 'All') {
+            let i = 0;
+            $interval(function() {
+                let realm = $scope.realmNames[i];
+                guildInfo.getGuildInfo(realm, $scope.queryName).success(function(data) {
+                    $scope.guildList.push(data);
+                }).error(function(error) {
+                    //TODO: catch error
+                });
+                i++;   
+            }, 50, 25/*$scope.realmNames.length*/);     
+        } else {
+            guildInfo.getGuildInfo($scope.queryRealm, $scope.queryName).success(function(data) {
+                $scope.guildList.push(data);
+                console.log($scope.guildList); //testing
+            }).error(function() {
+                //TODO: catch error
+            });
         }
+        $scope.showResults = true;      
     };
 
-}]);
-
-myApp.controller('guildInfoCtrl', ['$scope', 'guildInfo', 'realmInfo', '$interval', function($scope, guildInfo, 
-    realmInfo, $interval) {
-
-    $scope.guildInfo = {};
-    guildInfo.getGuildInfo().success(function(data) {
-        $scope.guildInfo = data;
-    }).error(function(error) {
-        $scope.guildInfo = {};
-    });
+    $scope.guildInfo = function(guild) {
+        guildSelected.setGuild(guild);
+        $location.path('/guildinfo');
+    };
 }]);
 
 myApp.config(["$routeProvider", function($routeProvider) {
@@ -246,8 +312,17 @@ myApp.config(["$routeProvider", function($routeProvider) {
         }
     })
     .when('/guildsearch', {
-        templateUrl: 'guild.html',
-        controller: 'guildInfoCtrl'
+        templateUrl: 'guildsearch.html',
+        controller: 'guildSearchCtrl'
+    })
+    .when('/guildinfo', {
+        templateUrl: 'guildinfo.html',
+        controller: 'guildInfoCtrl',
+        resolve: {
+            guild : function(guildSelected) {
+                return guildSelected.getGuild();
+            }
+        }
     })
     .when('/pvprank', {
     template: '',

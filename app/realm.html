@@ -1,22 +1,27 @@
-<div class="realm table-responsive">
-    <table class="realm--table table table-hover">
-        <thead>
-            <tr>
-                <th scope="col">Status</th>
-                <th scope="col">Realm Name</th>
-                <th scope="col">Type</th>
-                <th scope="col">Population</th>
-            </tr>
-        </thead>
-        <tbody>    
-            <tr ng-repeat="aRealm in realmInfo.list"> 
-                <td class="realm--status">
-                    <i class="glyphicon" ng-class="{'glyphicon-ok realm--status_true':aRealm.status, 'glyphicon-remove realm--status_false':!aRealm.status}"></i>
-                </td>
-                <td>{{aRealm.name}}</td>
-                <td>{{aRealm.type|uppercase}}</td>
-                <td class="realm--population">{{aRealm.population}}</td>
-            </tr>
-        </tbody>    
-    </table>
+<div class="realm">
+    <div class="main-info text-center">
+        <h2>Realms Status</h2>
+    </div>
+    <div class="table-responsive">
+        <table class="realm--table table table-hover">
+            <thead>
+                <tr>
+                    <th scope="col">Status</th>
+                    <th scope="col">Realm Name</th>
+                    <th scope="col">Type</th>
+                    <th scope="col">Population</th>
+                </tr>
+            </thead>
+            <tbody>    
+                <tr ng-repeat="aRealm in realmInfo.list"> 
+                    <td class="realm--status">
+                        <i class="glyphicon" ng-class="{'glyphicon-ok realm--status_true':aRealm.status, 'glyphicon-remove realm--status_false':!aRealm.status}"></i>
+                    </td>
+                    <td>{{aRealm.name}}</td>
+                    <td>{{aRealm.type|uppercase}}</td>
+                    <td class="realm--population">{{aRealm.population}}</td>
+                </tr>
+            </tbody>    
+        </table>
+    </div>
 </div>                 

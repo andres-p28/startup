@@ -1,0 +1,41 @@
+<div class="guild-info">
+    <div class="main-info text-center">
+        <h1>Guild info</h1>
+        <h2>
+            {{guild.name}} <small>{{guild.realm}}</small>
+        </h2>
+        <h3>
+            {{guild.side|enumFaction}} <i class="glyphicon glyphicon-triangle-bottom main-info--icon"></i> {{guild.achievementPoints}}
+        </h3>
+    </div>
+
+
+    <div class="roster-info">
+        <table class="roster-info--details table table-hover">
+            <thead>
+                <tr>
+                    <th scope="col"></th>
+                    <th scope="col">Name</th>
+                    <th scope="col">Level</th>
+                    <th scope="col">Class</th>
+                    <th scope="col">Race</th>
+                    <th scope="col">Rank</th>
+                    <th scope="col">Achievement points</th>
+                </tr>
+            </thead>
+            <tbody>    
+                <tr ng-repeat="member in guild.members" ng-click="charInfo(member.character)"> 
+                    <td>
+                        <img ng-src="http://us.battle.net/static-render/us/{{member.character.thumbnail}}" alt="thumbnail" class="common-info-thumbnail">
+                    </td>
+                    <td>{{member.character.name}}</td>
+                    <td>{{member.character.level}}</td>
+                    <td>{{member.character.class|enumClass}}</td>
+                    <td>{{member.character.race|enumRace}}</td>
+                    <td>{{member.rank}}</td>
+                    <td>{{member.character.achievementPoints}}</td>
+                </tr>
+            </tbody>    
+        </table>
+    </div>
+</div>    

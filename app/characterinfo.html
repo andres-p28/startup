@@ -4,10 +4,12 @@
             <img ng-src="http://us.battle.net/static-render/us/{{character.thumbnail}}" alt="thumbnail" class="basic-info-thumbnail">
             <span>    
                 {{character.name}}
-                <small>{{character.realm}} {{character.faction|enumFaction}}</small>
+                <small>{{character.guild.name}}, {{character.realm}} </small>
             </span>
         </h2>
-        <h4 class="text-center">{{character.class|enumClass}} {{character.race|enumRace}} {{character.level}}</h4>
+        <h4 class="text-center"> 
+            {{character.faction|enumFaction}} {{character.class|enumClass}} {{character.race|enumRace}} {{character.level}}
+        </h4>
     </div>
 
     <div class="stats-info">

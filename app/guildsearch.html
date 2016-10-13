@@ -1,0 +1,37 @@
+<div class="guild-search">
+    <div class="guild-search--input">
+        <input type="search" class="display-inline search-box form-control" ng-model="queryName" placeholder="Enter guild name..." />
+        <select class="display-inline selectpicker select-realm" ng-model="queryRealm">
+            <option selected>All</option>
+            <option ng-repeat="names in realmNames">{{names}}</option>
+        </select>
+        <a type="button" class="btn btn-default display-inline search-button" ng-click="search()" aria-label="Search">
+            <span class="glyphicon glyphicon-search" aria-hidden="true"></span>
+        </a>
+    </div>
+
+    <table class="guild-search--details table table-responsive table-hover" ng-show="showResults">
+        <thead>
+            <tr>
+                <th scope="col">Name</th>
+                <th scope="col">Level</th>
+                <th scope="col">Members</th>
+                <th scope="col">Realm</th>
+                <th scope="col">Faction</th>
+                <th scope="col">Battlegroup</th>
+                <th scope="col">Achievement points</th>
+            </tr>
+        </thead>
+        <tbody>    
+            <tr ng-repeat="guild in guildList" ng-click="guildInfo(guild)"> 
+                <td>{{guild.name}}</td>
+                <td>{{guild.level}}</td>
+                <td>{{guild.members.length}}</td>
+                <td>{{guild.realm}}</td>
+                <td>{{guild.faction|enumFaction}}</td>
+                <td>{{guild.battlegroup}}</td>
+                <td>{{guild.achievementPoints}}</td>
+            </tr>
+        </tbody>    
+    </table>
+</div>    
