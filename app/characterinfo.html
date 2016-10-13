@@ -1,0 +1,77 @@
+<div class="character-info">    
+    <div class="main-info">
+        <h2 class="text-center">
+            <img ng-src="http://us.battle.net/static-render/us/{{character.thumbnail}}" alt="thumbnail" class="basic-info-thumbnail">
+            <span>    
+                {{character.name}}
+                <small>{{character.realm}} {{character.faction|enumFaction}}</small>
+            </span>
+        </h2>
+        <h4 class="text-center">{{character.class|enumClass}} {{character.race|enumRace}} {{character.level}}</h4>
+    </div>
+
+    <div class="stats-info">
+        <div class="row">
+            <div class="col-md-offset-2 col-md-4">
+                <span class="health">HEALTH: {{character.stats.health}}</span>
+            </div>
+            <div class="col-md-4">
+                <span ng-class="powerTypeClass()">{{character.stats.powerType|uppercase}}: {{character.stats.power}}</span>    
+            </div>
+        </div>
+        <div class="row">     
+            <div class="col-md-offset-2 col-md-4">
+                <span>STR: {{character.stats.str}}</span>
+            </div>
+            <div class="col-md-4">    
+                <span>INT: {{character.stats.int}}</span>
+            </div>
+        </div>
+        <div class="row">    
+            <div class="col-md-offset-2 col-md-4">
+                <span>AGI: {{character.stats.agi}}</span>
+            </div>
+            <div class="col-md-4">
+                <span>STA: {{character.stats.agi}}</span>
+            </div>
+        </div>   
+    </div>
+
+    <div class="item-info text-center">
+        <h3 class="item-info--title">Items Info</h3>
+        <span class="item-info--average-lvl">Average Item Level: {{character.items.averageItemLevelEquipped}}</span>
+    </div>
+    <div class="table-responsive">
+        <table class="table item-details">
+            <thead>
+                <tr>
+                    <th>Slot</th>
+                    <th>Name</th>
+                    <th>Lvl</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr ng-repeat="slot in slotList">
+                    <td>{{slot.name}}</td>
+                    <td>{{character.items[slot.prop].name}}</td>
+                    <td>{{character.items[slot.prop].itemLevel}}</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <div class="pvp-info">
+        <h3 class="pvp-info--title text-center">PVP Info</h3>
+        <div class="pvp-info--details">
+            <div class="col-md-4">
+                <span class="pvp-info--2v2 text-center">2v2 Rank<br> {{character.pvp.brackets.ARENA_BRACKET_2v2.rating}}</span>
+            </div>
+            <div class="col-md-4">
+                <span class="pvp-info--3v3 text-center">3v3 Rank<br> {{character.pvp.brackets.ARENA_BRACKET_3v3.rating}}</span>
+            </div>
+            <div class="col-md-4">
+                <span class="pvp-info--rbg text-center">RGB Rank<br> {{character.pvp.brackets.ARENA_BRACKET_RBG.rating}}</span>
+            </div>
+        </div>
+    </div>
+</div>

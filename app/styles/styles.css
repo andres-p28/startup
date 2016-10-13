@@ -1,31 +1,130 @@
-* {
-    -webkit-box-sizing: border-box;
-    -moz-box-sizing: border-box;
-    box-sizing: border-box;
-}
-
 /* realm.html */
 
-.realm-table .realm-status {
-
+.realm .realm--population {
+    text-transform: capitalize;
 }
 
-.realm-table .realm-status_true {
+.realm--table .realm--status_true {
     color: green;
 }
 
-.realm-table .realm-status_false {
+.realm--table .realm--status_false {
     color: red;
 }
 
 /* charactersearch html */
 
-.display-inline {
+.character-search .display-inline {
     display: inline-block;
 }
 
-.search-box {
+.character-search .character-search--input {
+    margin-top: 150px;
+    text-align: center;
+}
+
+.character-search .character-search--input .search-box {
     width: 50%;
+}
+
+.character-search .character-search--details {
+    margin-top: 50px;
+}
+
+.character-search .common-info-thumbnail {
+    border-radius: 3px;
+    height: 42px;
+    width: 42px;
+}
+
+.table.character-search--details > tbody > tr > td {
+    vertical-align: middle;
+}
+
+/* characterinfo.html */
+
+.character-info .main-info {
+    margin-bottom: 10px;
+}
+
+.character-info .basic-info-thumbnail {
+    border-radius: 4px;
+}
+
+.character-info .stats-info span {
+    background-color: #d9d9d9;
+    border: 1px solid black;
+    border-radius: 3px;
+    display: block;
+    margin-bottom: 5px;
+    padding: 6px 12px;
+
+}
+
+.character-info .stats-info .health {
+    background-color: #00e600;
+}
+
+
+.character-info .stats-info .power-type-mana {
+    background-color: #4d4dff;
+}
+
+.character-info .stats-info .power-type-maelstrom {
+    background-color: #ffa500;
+}
+
+.character-info .stats-info .power-type-energy {
+    background-color:  #ffff66;
+}
+
+.character-info .stats-info .power-type-focus {
+    background-color:  #ffa500;
+}
+
+.character-info .stats-info .power-type-runic {
+    background-color:  #00ffcc;
+}
+
+.character-info .stats-info .power-type-rage {
+    background-color:  #ff471a;
+}
+
+.character-info .pvp-info--details span {
+    border: 1px solid black;
+    border-radius: 3px;
+    display: block;
+    margin-bottom: 5px;
+    padding: 6px 12px;
+
+}
+
+
+/* index.html */
+
+#menu-toggle {
+    background-color: rgba(0,0,0,0.1);
+    position: fixed;
+    left: 10px;
+    top: 10px;
+     -webkit-transition: all 0.5s ease;
+    -moz-transition: all 0.5s ease;
+    -o-transition: all 0.5s ease;
+    transition: all 0.5s ease;
+}
+
+#menu-toggle.btn-toggled {
+    left: 260px;
+}
+
+@media(min-width:768px) {
+    #menu-toggle {
+        left: 260px;
+    }
+
+    #menu-toggle.btn-toggled {
+        left: 10px;
+    }
 }
 
 
