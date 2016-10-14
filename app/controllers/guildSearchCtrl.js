@@ -24,7 +24,8 @@ guildSearchCtrl.controller('guildSearchCtrl', ['$scope', 'guildInfo', 'realmInfo
             $interval(function() {
                 let realm = $scope.realmNames[i];
                 guildInfo.getGuildInfo(realm, $scope.queryName).success(function(data) {
-                    $scope.guildList.push(data);
+                    if(!angular.equals(data, {}))
+                        $scope.guildList.push(data);
                     $scope.spinnerIcon = false;
                     $scope.showResults = true;
                 }).error(function(error) {

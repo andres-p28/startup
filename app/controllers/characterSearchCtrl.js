@@ -24,8 +24,9 @@ characterSearchCtrl.controller('characterSearchCtrl', ['$scope', 'characterInfo'
             $interval(function() {
                 let realm = $scope.realmNames[i];
                 characterInfo.getCharInfo(realm, $scope.queryName).success(function(data) {
-                    $scope.characterList.push(data);
-                     $scope.spinnerIcon = false;
+                    if(!angular.equals(data, {}))
+                        $scope.characterList.push(data);
+                    $scope.spinnerIcon = false;
                     $scope.showResults = true;
                 }).error(function(error) {
                     $scope.spinnerIcon = false;
