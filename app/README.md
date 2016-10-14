@@ -1,6 +1,6 @@
 ## Introduction
 
-Applicaction to find useful **World of Warcraft** data in the **US servers** a simple and intuitive way.
+Applicaction to find useful **World of Warcraft** data in the **US servers** in a simple and intuitive way.
 
 
 ## How it works?
