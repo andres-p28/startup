@@ -1,4 +1,7 @@
-let myApp = angular.module('myApp',['ngRoute']);
+let myApp = angular.module('myApp',[
+    'ngRoute'
+]);
+
 
 myApp.constant('apiConfig', {
     baseUrl: 'https://us.api.battle.net',
@@ -150,7 +153,54 @@ myApp.factory('guildSelected', function() {
     }
 });
 
-myApp.controller('characterInfoCtrl',['$scope', 'character', 'slotData', function($scope, character, slotData) {
+myApp.factory('pvpLeaderboards', function($http, apiConfig) {
+
+    function getBracket(bracket) {
+        return $http({
+            method: 'GET',
+            url: apiConfig.baseUrl + '/wow/leaderboard/'+bracket,
+            params: apiConfig,
+            timeout: 120000 //setting timeout because API usually takes to long to respond
+        })
+    };
+    return {
+    /**
+     * @param {String} bracket
+     * @return {promise} complete leaderboard     
+     */
+     getBracket: getBracket
+    }
+});
+
+myApp.controller('pvpLeaderboardsCtrl', ['$scope', 'pvpLeaderboards', 'characterInfo', '$location', 'characterSelected', 
+    function($scope, pvpLeaderboards, characterInfo, $location, characterSelected) {   
+    $scope.bracketList = [];
+    $scope.spinnerIcon = false;
+
+    $scope.search = function(bracket) {
+        $scope.spinnerIcon = true;
+        pvpLeaderboards.getBracket(bracket).success(function(data) {
+            $scope.spinnerIcon = false;
+            $scope.bracketList = data.rows.slice(0,10);
+            $scope.showResults = true;
+        }).error(function() {
+            $scope.spinnerIcon = false;
+            $location.path('/error');
+        });
+    }
+
+    $scope.charInfo = function(character) {
+        characterInfo.getCharInfo(character.realmName, character.name).success(function(data) {
+            characterSelected.setChar(data);
+            $location.path('/charinfo');    
+        }).error(function(){
+            $location.path('/error');
+        });
+    };
+}]);
+
+myApp.controller('characterInfoCtrl',['$scope', 'character', 'slotData', 'guildInfo', 'guildSelected', '$location',
+    function($scope, character, slotData, guildInfo, guildSelected, $location) {
     $scope.character = character;
     $scope.slotList = slotData.list;
 
@@ -167,35 +217,53 @@ myApp.controller('characterInfoCtrl',['$scope', 'character', 'slotData', functio
             case 'runic':
                 return 'power-type-runic';
             case 'focus':
-                return 'power-type-focus';               
+                return 'power-type-focus'; 
+            case 'fury':
+                return 'power-type-fury';
+            default:
+                return 'power-type-mana';              
         }
     };
 
+    $scope.redirectGuild = function() {
+        guildInfo.getGuildInfo($scope.character.realm, $scope.character.guild.name).success(function(data) {
+            guildSelected.setGuild(data);
+            $location.path('/guildinfo');    
+        }).error(function() {
+            $location.path('/error');
+        });
+;
+    };
 }]);
 
-myApp.controller('guildInfoCtrl', ['$scope', 'guild', function($scope, guild) {
+myApp.controller('guildInfoCtrl', ['$scope', 'guild','characterSelected', '$location', 'characterInfo',
+    function($scope, guild, characterSelected, $location, characterInfo) {
+    
     $scope.guild = guild;
 
     $scope.charInfo = function(character) {
-        characterSelected.setChar(character);
-        $location.path('/charinfo');
+        characterInfo.getCharInfo(character.realm, character.name).success(function(data) {
+            characterSelected.setChar(data);
+            $location.path('/charinfo');    
+        }).error(function(){
+            $location.path('/error');
+        });
     };
 }]);
 
-myApp.controller('realmStatusCtrl', ['$scope', 'realmInfo', function($scope, realmInfo) {
+myApp.controller('realmStatusCtrl', ['$scope', 'realmInfo', '$location', function($scope, realmInfo, $location) {
     $scope.realmInfo = {};
+    $scope.showResults = false;
+    $scope.spinnerIcon = true;
 
     realmInfo.getList().success(function(data) {
         $scope.realmInfo.list = data.realms;
-    }).error(function(error, status){
-        $scope.requestError = true;
-        $scope.errorData = {error: error, status: status};
+        $scope.spinnerIcon = false;
+        $scope.showResults = true;
+    }).error(function() {
+        $location.path('/error');
     });    
 
-    $scope.updateStatus = function() {
-        realmInfo.updateList();
-        $scope.realm.list = realmInfo.getList();
-    };
 }]);
 
 myApp.controller('characterSearchCtrl', ['$scope', 'characterInfo', 'realmInfo', '$interval', 'characterSelected', '$location',  
@@ -204,37 +272,45 @@ myApp.controller('characterSearchCtrl', ['$scope', 'characterInfo', 'realmInfo',
     $scope.showResults = false;
     $scope.characterList = [];
     $scope.queryRealm = 'All';
-    $scope.queryName = 'Chigz';
+    $scope.queryName = '';
+    $scope.spinnerIcon = false;
 
     realmInfo.getList().success(function(data) {
             $scope.realmNames = data.realms.map((obj) => {return obj.name});
-            console.log("names ready"); //testing
         }).error(function() {
             $scope.realmNames = [];
+            $location.path('/error');
         });
     
     $scope.search = function() {
         $scope.characterList = [];
+        $scope.spinnerIcon = true;
         if ($scope.queryRealm == 'All') {
             let i = 0;
             $interval(function() {
                 let realm = $scope.realmNames[i];
                 characterInfo.getCharInfo(realm, $scope.queryName).success(function(data) {
                     $scope.characterList.push(data);
-                    console.log('CHARACTER ADDED'); //testing
+                     $scope.spinnerIcon = false;
+                    $scope.showResults = true;
                 }).error(function(error) {
+                    $scope.spinnerIcon = false;
+                    if(error.reason != 'Character not found.')
+                        $location.path('/error');
                 });
                 i++;   
-            }, 50, 25/*$scope.realmNames.length*/);     
+            }, 50, $scope.realmNames.length);     
         } else {
             characterInfo.getCharInfo($scope.queryRealm, $scope.queryName).success(function(data) {
                 $scope.characterList.push(data);
-                console.log($scope.characterList); //testing
-            }).error(function() {
-                console.log("reqerror"); //testing
+                $scope.spinnerIcon = false;
+                $scope.showResults = true;
+            }).error(function(error) {
+                $scope.spinnerIcon = false;
+                if(error.reason != 'Character not found.')
+                    $location.path('/error');
             });
-        }
-        $scope.showResults = true;      
+        }      
     };
 
     $scope.charInfo = function(character) {
@@ -246,40 +322,48 @@ myApp.controller('characterSearchCtrl', ['$scope', 'characterInfo', 'realmInfo',
 myApp.controller('guildSearchCtrl', ['$scope', 'guildInfo', 'realmInfo', '$interval', 'guildSelected', '$location', 
     function($scope, guildInfo, realmInfo, $interval, guildSelected, $location) {
 
+    $scope.spinnerIcon = false;
     $scope.showResults = false;
     $scope.guildList = [];
     $scope.queryRealm = 'All';
-    $scope.queryName = 'do my dance';
+    $scope.queryName = '';
 
     realmInfo.getList().success(function(data) {
             $scope.realmNames = data.realms.map((obj) => {return obj.name});
         }).error(function() {
             $scope.realmNames = [];
-            //TODO: catch error
+            $location.path('/error');
         });
     
     $scope.search = function() {
         $scope.guildList = [];
+        $scope.spinnerIcon = true;
         if ($scope.queryRealm == 'All') {
             let i = 0;
             $interval(function() {
                 let realm = $scope.realmNames[i];
                 guildInfo.getGuildInfo(realm, $scope.queryName).success(function(data) {
                     $scope.guildList.push(data);
+                    $scope.spinnerIcon = false;
+                    $scope.showResults = true;
                 }).error(function(error) {
-                    //TODO: catch error
+                    $scope.spinnerIcon = false;
+                    if(error.reason != 'Guild not found.')
+                        $location('/error');
                 });
                 i++;   
-            }, 50, 25/*$scope.realmNames.length*/);     
+            }, 50, $scope.realmNames.length);     
         } else {
             guildInfo.getGuildInfo($scope.queryRealm, $scope.queryName).success(function(data) {
                 $scope.guildList.push(data);
-                console.log($scope.guildList); //testing
-            }).error(function() {
-                //TODO: catch error
+                $scope.spinnerIcon = false;
+                $scope.showResults = true;
+            }).error(function(error) {
+                $scope.spinnerIcon = false;
+                if(error.reason != 'Guild not found.')
+                    $location('/error');
             });
-        }
-        $scope.showResults = true;      
+        }          
     };
 
     $scope.guildInfo = function(guild) {
@@ -291,8 +375,7 @@ myApp.controller('guildSearchCtrl', ['$scope', 'guildInfo', 'realmInfo', '$inter
 myApp.config(["$routeProvider", function($routeProvider) {
     $routeProvider
     .when('/', {
-        template: ''
-        //templateUrl: 'main.html'
+        templateUrl: 'main.html'
     })
     .when('/realmstatus', {       
         templateUrl: 'realm.html',
@@ -325,9 +408,12 @@ myApp.config(["$routeProvider", function($routeProvider) {
         }
     })
     .when('/pvprank', {
-    template: '',
-    controller: ''
+    templateUrl: 'pvprank.html',
+    controller: 'pvpLeaderboardsCtrl'
     })
+    .when('/error', {
+        templateUrl:'error.html'
+    }) 
     .otherwise({
         redirectTo: '/'
     });
@@ -424,7 +510,7 @@ myApp.filter('enumRace', function() {
             case 26:
                 return 'Pandaren';            
              default:
-                return input; 
+                return 'race_error'; 
       }
     }
 });

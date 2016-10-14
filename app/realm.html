@@ -1,8 +1,9 @@
 <div class="realm">
     <div class="main-info text-center">
-        <h2>Realms Status</h2>
+        <h2>Realm Status</h2>
     </div>
-    <div class="table-responsive">
+    <img src="img/default.svg" class="spinner" ng-show="spinnerIcon" alt="loading-icon">
+    <div class="table-responsive" ng-show="showResults">
         <table class="realm--table table table-hover">
             <thead>
                 <tr>

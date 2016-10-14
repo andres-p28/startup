@@ -11,31 +11,33 @@
 
 
     <div class="roster-info">
-        <table class="roster-info--details table table-hover">
-            <thead>
-                <tr>
-                    <th scope="col"></th>
-                    <th scope="col">Name</th>
-                    <th scope="col">Level</th>
-                    <th scope="col">Class</th>
-                    <th scope="col">Race</th>
-                    <th scope="col">Rank</th>
-                    <th scope="col">Achievement points</th>
-                </tr>
-            </thead>
-            <tbody>    
-                <tr ng-repeat="member in guild.members" ng-click="charInfo(member.character)"> 
-                    <td>
-                        <img ng-src="http://us.battle.net/static-render/us/{{member.character.thumbnail}}" alt="thumbnail" class="common-info-thumbnail">
-                    </td>
-                    <td>{{member.character.name}}</td>
-                    <td>{{member.character.level}}</td>
-                    <td>{{member.character.class|enumClass}}</td>
-                    <td>{{member.character.race|enumRace}}</td>
-                    <td>{{member.rank}}</td>
-                    <td>{{member.character.achievementPoints}}</td>
-                </tr>
-            </tbody>    
-        </table>
+        <div class="table-responsive">
+            <table class="roster-info--details table table-hover">
+                <thead>
+                    <tr>
+                        <th scope="col"></th>
+                        <th scope="col">Name</th>
+                        <th scope="col">Level</th>
+                        <th scope="col">Class</th>
+                        <th scope="col">Race</th>
+                        <th scope="col">Rank</th>
+                        <th scope="col">Achievement points</th>
+                    </tr>
+                </thead>
+                <tbody>    
+                    <tr ng-repeat="member in guild.members" ng-click="charInfo(member.character)"> 
+                        <td>
+                            <img ng-src="http://us.battle.net/static-render/us/{{member.character.thumbnail}}" alt="thumbnail" class="common-info-thumbnail"></img>
+                        </td>
+                        <td>{{member.character.name}}</td>
+                        <td>{{member.character.level}}</td>
+                        <td>{{member.character.class|enumClass}}</td>
+                        <td>{{member.character.race|enumRace}}</td>
+                        <td>{{member.rank}}</td>
+                        <td>{{member.character.achievementPoints}}</td>
+                    </tr>
+                </tbody>    
+            </table>
+        </div>    
     </div>
 </div>    
