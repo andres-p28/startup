@@ -1,0 +1,35 @@
+header, footer, aside, nav {
+    background-color: #696969;
+}
+
+html{
+    font: 14px arial, sans-serif;
+}
+
+header, footer {
+    text-align: center;
+}
+
+.header {
+    font-size: 46px;
+}
+.footer, .sidebar {
+    font-size: 10px;
+}
+
+.content {
+    font-size: 14px;
+}
+
+.navigation {
+    font-size: 12px;
+}
+
+*[class$=r] {
+    background-color: magenta;
+}
+
+*[class*=a]:not(*[class$=r]) {
+    background-color: blue;
+}
+
