@@ -1,0 +1,37 @@
+<div class="pvprank-search">
+    <div class="pvprank-search--select">
+        <button class="btn btn-default display-inline search-button" ng-click="search('3v3')">3V3</button>
+        <button class="btn btn-default display-inline search-button" ng-click="search('rbg')">RBG</button>
+    </div>
+    <img src="img/default.svg" class="spinner" ng-show="spinnerIcon" alt="loading-icon">
+    <div class="table-responsive" ng-show="showResults">
+        <table class="character-search--details table table-hover">
+            <thead>
+                <tr>
+                    <th scope="col">&#35;</th>
+                    <th scope="col">Name</th>
+                    <th scope="col">Class</th>
+                    <th scope="col">Race</th>
+                    <th scope="col">Rating</th>
+                    <th scope="col">W - L</th>
+                    <th scope="col">Gender</th>
+                    <th scope="col">Faction</th>
+                    <th scope="col">Realm</th>
+                </tr>
+            </thead>
+            <tbody>    
+                <tr ng-repeat="character in bracketList" ng-click="charInfo(character)"> 
+                    <td>{{character.ranking}}</td>
+                    <td>{{character.name}}</td>
+                    <td>{{character.classId|enumClass}}</td>
+                    <td>{{character.raceId|enumRace}}</td>
+                    <td>{{character.rating}}</td>
+                    <td> {{character.seasonWins}} - {{character.seasonLosses}} </td>
+                    <td>{{character.genderId|enumGender}}</td>
+                    <td>{{character.factionId|enumFaction}}</td>
+                    <td>{{character.realmName}}</td>
+                </tr>
+            </tbody>    
+        </table>
+    </div>     
+</div> 

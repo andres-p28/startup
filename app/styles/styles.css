@@ -1,0 +1,223 @@
+/* realm.html */
+
+.realm .realm--population {
+    text-transform: capitalize;
+}
+
+.realm--table .realm--status_true {
+    color: green;
+}
+
+.realm--table .realm--status_false {
+    color: red;
+}
+
+/* charactersearch html */
+
+.character-search .display-inline {
+    display: inline-block;
+}
+
+.character-search .character-search--input {
+    margin-top: 150px;
+    text-align: center;
+}
+
+
+.guild-search .guild-search--input .search-box, /* TODO: proper namespace*/
+.character-search .character-search--input .search-box {
+    margin-bottom: 10px;
+    width: 90%;
+}
+
+@media(min-width: 500px) {
+    
+    .guild-search .guild-search--input .search-box, /* TODO: proper namespace*/
+    .character-search .character-search--input .search-box {
+        margin-bottom: 0px;
+        width: 50%;
+    }
+
+} 
+
+.character-search .character-search--details {
+    margin-top: 50px;
+}
+
+.character-search .common-info-thumbnail {
+    border-radius: 3px;
+    height: 42px;
+    width: 42px;
+}
+
+.table.character-search--details > tbody > tr > td {
+    vertical-align: middle;
+}
+
+/* guildsearch.html */
+
+.guild-search .display-inline {
+    display: inline-block;
+}
+
+.guild-search .guild-search--input {
+    margin-top: 150px;
+    text-align: center;
+}
+
+
+.guild-search .character-search--details {
+    margin-top: 50px;
+}
+
+.character-search .common-info-thumbnail {
+    border-radius: 3px;
+    height: 42px;
+    width: 42px;
+}
+
+
+/* characterinfo.html */
+
+.character-info .main-info {
+    margin-bottom: 10px;
+}
+
+.character-info .basic-info-thumbnail {
+    border-radius: 4px;
+}
+
+.character-info .stats-info span {
+    background-color: #d9d9d9;
+    border: 1px solid black;
+    border-radius: 3px;
+    display: block;
+    margin-bottom: 5px;
+    padding: 6px 12px;
+
+}
+
+.character-info .stats-info .health {
+    background-color: #00e600;
+}
+
+
+.character-info .stats-info .power-type-mana {
+    background-color: #4d4dff;
+}
+
+.character-info .stats-info .power-type-maelstrom {
+    background-color: #ffa500;
+}
+
+.character-info .stats-info .power-type-energy {
+    background-color:  #ffff66;
+}
+
+.character-info .stats-info .power-type-focus {
+    background-color:  #ffa500;
+}
+
+.character-info .stats-info .power-type-runic {
+    background-color:  #00ffcc;
+}
+
+.character-info .stats-info .power-type-rage {
+    background-color:  #ff471a;
+}
+
+.character-info .stats-info .power-type-fury {
+    background-color: #e600e6;
+}
+
+.character-info .pvp-info--details span {
+    background-color: #cc4400;
+    border: 1px solid black;
+    border-radius: 3px;
+    color: white;
+    display: block;
+    margin-bottom: 5px;
+    padding: 6px 12px;
+
+}
+
+/* guildinfo.html */
+
+.guild-info .main-info--icon {
+    color: yellow;
+}
+
+.guild-info .common-info-thumbnail {
+    border-radius: 3px;
+    height: 42px;
+    width: 42px;
+}
+
+.table.roster-info--details > tbody > tr > td {
+    vertical-align: middle;
+}
+
+/* pvprank.html */
+
+.pvprank-search .display-inline {
+    display: inline-block;
+}
+
+.pvprank-search .pvprank-search--select {
+    margin-top: 150px;
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+/* error.html */
+
+.error-message .error-message--text {
+    margin-top: 100px;
+    color: gray;
+}
+
+
+/* main.html */
+
+
+.main-page .main-page--info {
+    min-width: 170px;
+    margin-top: 150px;
+}
+
+/* index.html */
+
+#menu-toggle {
+    background-color: rgba(0,0,0,0.1);
+    position: fixed;
+    left: 10px;
+    top: 10px;
+     -webkit-transition: all 0.5s ease;
+    -moz-transition: all 0.5s ease;
+    -o-transition: all 0.5s ease;
+    transition: all 0.5s ease;
+    z-index: 1000;
+}
+
+#menu-toggle.btn-toggled {
+    left: 260px;
+}
+
+@media(min-width:768px) {
+    #menu-toggle {
+        left: 260px;
+    }
+
+    #menu-toggle.btn-toggled {
+        left: 10px;
+    }
+}
+
+/* global */
+
+.spinner {
+    width: 40px;
+    margin: 10px auto;
+    display: block;
+}
+

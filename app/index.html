@@ -1,0 +1,95 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <title>Lock &amp; Load</title>
+        <meta charset="UTF-8">
+        <meta name="author" content="Andrés Palumbo"/>
+        <meta name="description" content="example page" />
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <script   src="http://code.jquery.com/jquery-3.1.1.js" integrity="sha256-16cdPddA6VdVInumRGo6IbivbERE8p7CQR3HzTBuELA="   crossorigin="anonymous"></script>
+        <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+        <link rel="stylesheet" href="styles/normalize.css" type="text/css">
+        <link href="styles/simple-sidebar.css" rel="stylesheet" />
+        <link rel="stylesheet" href="styles/styles.css" type="text/css">
+        <script src = "https://ajax.googleapis.com/ajax/libs/angularjs/1.5.2/angular.min.js"></script>
+        <script src = "https://ajax.googleapis.com/ajax/libs/angularjs/1.5.2/angular-route.js"></script>
+    </head>
+    <body>
+
+        <div id="wrapper">
+            <!-- Sidebar -->
+            <div id="sidebar-wrapper">
+                <ul class="sidebar-nav">
+                    <li class="sidebar-brand">
+                        <a href="#">
+                            Home
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#realmstatus">Realm Status</a>
+                    </li>
+                    <li>
+                        <a href="#charsearch">Search Character</a>
+                    </li>
+                    <li>
+                        <a href="#guildsearch">Search guild</a>
+                    </li>
+                    <li>
+                        <a href="#pvprank">PVP Leaderboard</a>
+                    </li>
+                </ul>
+            </div>
+            <!-- /#sidebar-wrapper -->
+
+            <!-- Page Content -->
+            <div id="page-content-wrapper" ng-app="myApp">
+                <div class="container-fluid">
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <a href="#menu-toggle" class="btn btn-default" id="menu-toggle"><i class="glyphicon glyphicon-menu-hamburger"></i></a>
+                            <div class="main-view" ng-view></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- /#page-content-wrapper -->
+
+        </div>
+        <!-- /#wrapper -->
+        
+        <!-- Menu Toggle Script -->
+        <script>
+            $("#menu-toggle").click(function(e) {
+                e.preventDefault();
+                $("#wrapper").toggleClass("toggled");
+                $("#menu-toggle").toggleClass("btn-toggled");
+            });
+        </script>
+        
+        
+
+        <script src="filters/enumClass.js" type="text/javascript"></script>
+        <script src="filters/enumFaction.js" type="text/javascript"></script>
+        <script src="filters/enumGender.js" type="text/javascript"></script>
+        <script src="filters/enumRace.js" type="text/javascript"></script>
+
+        <script src="services/characterInfo.js" type="text/javascript"></script>
+        <script src="services/characterSelected.js" type="text/javascript"></script>
+        <script src="services/guildInfo.js" type="text/javascript"></script>
+        <script src="services/guildSelected.js" type="text/javascript"></script>
+        <script src="services/pvpLeaderboards.js" type="text/javascript"></script>
+        <script src="services/realmInfo.js" type="text/javascript"></script>
+        <script src="services/slotData.js" type="text/javascript"></script>
+
+        <script src="controllers/realmStatusCtrl.js" type="text/javascript"></script>
+        <script src="controllers/characterSearchCtrl.js" type="text/javascript"></script>
+        <script src="controllers/guildInfoCtrl.js" type="text/javascript"></script>
+        <script src="controllers/guildSearchCtrl.js" type="text/javascript"></script>
+        <script src="controllers/pvpLeaderboardsCtrl.js" type="text/javascript"></script>     
+        <script src="controllers/characterInfoCtrl.js" type="text/javascript"></script>
+
+        <script src="js/apiConfig.js" type="text/javascript"></script>
+        <script src="js/main.js" type="text/javascript"></script>    
+    
+    </body>
+</html>

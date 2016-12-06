@@ -1,0 +1,47 @@
+<div class="character-search">
+    <div class="character-search--input">
+        <input type="search" class="display-inline search-box form-control" ng-model="queryName" placeholder="Enter character name..." />
+        <div class="button-and-dropbox display-inline">
+            <select class="selectpicker select-realm" ng-model="queryRealm">
+                <option selected>All</option>
+                <option ng-repeat="names in realmNames">{{names}}</option>
+            </select>
+            <a type="button" class="btn btn-default search-button" ng-click="search()" aria-label="Search">
+                <span class="glyphicon glyphicon-search" aria-hidden="true"></span>
+            </a>
+        </div>
+    </div>
+    <img src="img/default.svg" class="spinner" ng-show="spinnerIcon" alt="loading-icon">
+    <div class="table-responsive" ng-show="showResults">
+        <table class="character-search--details table table-hover">
+            <thead>
+                <tr>
+                    <th scope="col"></th>
+                    <th scope="col">Name</th>
+                    <th scope="col">Level</th>
+                    <th scope="col">Class</th>
+                    <th scope="col">Race</th>
+                    <th scope="col">Gender</th>
+                    <th scope="col">Faction</th>
+                    <th scope="col">Achievement points</th>
+                    <th scope="col">Realm</th>
+                </tr>
+            </thead>
+            <tbody>    
+                <tr ng-repeat="character in characterList" ng-click="charInfo(character)"> 
+                    <td>
+                        <img ng-src="http://us.battle.net/static-render/us/{{character.thumbnail}}" alt="thumbnail" class="common-info-thumbnail">
+                    </td>
+                    <td>{{character.name}}</td>
+                    <td>{{character.level}}</td>
+                    <td>{{character.class|enumClass}}</td>
+                    <td>{{character.race|enumRace}}</td>
+                    <td>{{character.gender|enumGender}}</td>
+                    <td>{{character.faction|enumFaction}}</td>
+                    <td>{{character.achievementPoints}}</td>
+                    <td>{{character.realm}}</td>
+                </tr>
+            </tbody>    
+        </table>
+    </div>
+</div>    
